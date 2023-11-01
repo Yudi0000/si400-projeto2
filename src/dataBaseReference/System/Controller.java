@@ -23,40 +23,19 @@ public class Controller
    private AbstractOrderDAO    ordersDAO          = null;
    private MariaDBConnection   myDBConnection     = null;
    private MemoryDBConnection  memoryDBConnection = null;
-   private DataBaseType        selectedDataBase   = DataBaseType.INVALID;
    private Scanner scanner;
    
    public Controller(DataBaseType selectedDataBase)
       {
       super();
-      this.selectedDataBase = selectedDataBase;
       this.scanner = new Scanner(System.in);
       }
 
    private void openConnection()
       {
-      switch (selectedDataBase)
-         {
-         case MEMORY:
-            {
-            memoryDBConnection = new MemoryDBConnection();
-            this.customerDAO = new Customer_Mem_DAO(memoryDBConnection);
-            this.ordersDAO = new Order_Mem_DAO(memoryDBConnection);
-            }
-            break;
-         case MARIADB:
-            {
             myDBConnection = new MariaDBConnection();
             this.customerDAO = new Customer_DB_DAO(myDBConnection.getConnection());
             this.ordersDAO = new Order_DB_DAO(myDBConnection.getConnection());
-            }
-            break;
-         default:
-            {
-            System.out.println("Database selection not supported.");
-            throw new InvalidParameterException("Selector is unspecified: " + selectedDataBase);
-            }
-         }
       }
 
    private void closeConnection()
@@ -74,6 +53,8 @@ public class Controller
    public void start()
       {
       openConnection();
+      insertData();
+
       int choice = 0;
       do {
           displayMainMenu();
@@ -328,6 +309,7 @@ private void insertData()
 		        	    try {
 		        	        customerDAO.addCustomer(newCustomer);
 		        	        System.out.println("Cliente adicionado com sucesso!");
+		        	        
 		        	    } catch (SQLException e) {
 		        	        System.err.println("Erro ao adicionar cliente: " + e.getMessage());
 		        	    }
