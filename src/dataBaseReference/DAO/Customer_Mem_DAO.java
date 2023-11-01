@@ -26,6 +26,7 @@ public class Customer_Mem_DAO extends AbstractCustomerDAO
       customers.addAll(databaseRef.getCustomerList());
       return customers;
       }
+   
 
    @Override
    public Customer getCustomerById(int customerId) throws SQLException
@@ -43,6 +44,22 @@ public class Customer_Mem_DAO extends AbstractCustomerDAO
          }
       return customer;
       }
+   @Override
+   public List<Customer> getCustomerByName(String customerName) throws SQLException {
+       List<Customer> customers = new ArrayList<>();
+
+       Iterator<Customer> iterator = databaseRef.getCustomerList().iterator();
+
+       while (iterator.hasNext()) {
+           Customer buffer = iterator.next();
+           if (buffer.getName().equals(customerName)) {
+               customers.add(buffer);
+           }
+       }
+
+       return customers;
+   }
+
 
    @Override
    public void addCustomer(Customer customer) throws SQLException

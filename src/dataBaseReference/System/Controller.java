@@ -53,8 +53,6 @@ public class Controller
    public void start()
       {
       openConnection();
-      insertData();
-
       int choice = 0;
       do {
           displayMainMenu();
@@ -78,7 +76,7 @@ public class Controller
                   System.out.println("Saindo do Menu.");
                   break;
               default:
-                  System.out.println("Opção inválida. Tente novamente.");
+                  System.out.println("Invalid option. Try again.");
                   break;
           }
       } while (choice != 5);
@@ -283,7 +281,7 @@ private void insertData()
 	    System.out.println("3. Gerenciar Relatórios");
 	    System.out.println("4. Informações");
 	    System.out.println("5. Sair");
-	    System.out.print("Escolha uma opção: ");
+	    System.out.print("Choose an option: ");
 	}
    
    public void handleCustomerMenu() {
@@ -294,56 +292,94 @@ private void insertData()
 	        scanner.nextLine();
 
 	        switch (customerChoice) {
-	        	case 1:
+	        	case 1: //FUNCIONANDO
 	        		  Customer newCustomer = new Customer();
-		        	    System.out.print("Informe o ID do cliente: ");
+		        	    System.out.print("Enter the customer ID: ");
 		        	    newCustomer.setId(scanner.nextInt());
 		        	    scanner.nextLine();
-		        	    System.out.print("Informe o nome do cliente: ");
+		        	    System.out.print("Enter the customer's name: ");
 		        	    newCustomer.setName(scanner.nextLine());
-		        	    System.out.print("Informe a cidade do cliente: ");
+		        	    System.out.print("Enter the customer's city: ");
 		        	    newCustomer.setCity(scanner.nextLine());
-		        	    System.out.print("Informe o estado do cliente: ");
+		        	    System.out.print("Enter the client's state: ");
 		        	    newCustomer.setState(scanner.nextLine());
 
 		        	    try {
 		        	        customerDAO.addCustomer(newCustomer);
-		        	        System.out.println("Cliente adicionado com sucesso!");
+		        	        System.out.println("Customer added successfully!");
 		        	        
 		        	    } catch (SQLException e) {
-		        	        System.err.println("Erro ao adicionar cliente: " + e.getMessage());
+		        	        System.err.println("Error adding customer: " + e.getMessage());
 		        	    }
 		        	    break;
-	        	case 2:
-	        	    System.out.print("Informe o ID do cliente: ");
+	        	case 2: //FUNCIONANDO
+	        	    System.out.print("Enter the customer ID: ");
 	        	    int customerId = scanner.nextInt();
 	        	    scanner.nextLine();
 
 	        	    try {
-	        	        customerDAO.getCustomerById(customerId);
+	        	        Customer customer = customerDAO.getCustomerById(customerId);
+
+	        	        if (customer != null) {
+	        	            System.out.println("Customer Information:");
+	        	            System.out.println("ID: " + customer.getId());
+	        	            System.out.println("Name: " + customer.getName());
+	        	            System.out.println("City: " + customer.getCity());
+	        	            System.out.println("State: " + customer.getState());
+	        	        } else {
+	        	            System.out.println("Customer not found.");
+	        	        }
 	        	    } catch (SQLException e) {
-	        	        System.err.println("Erro ao recuperar cliente: " + e.getMessage());
+	        	        System.err.println("Error recovering client: " + e.getMessage());
 	        	    }
 	        	    break;
-	        	case 3:
-	        	    System.out.print("Informe o ID do cliente que deseja excluir: ");
+	        	case 3: //Funcionando
+	        	    System.out.print("Enter the customer Name: ");
+	        	    String customerName = scanner.nextLine();
+
+	        	    try {
+	        	        List<Customer> customersWithSameName = customerDAO.getCustomerByName(customerName);
+
+	        	        if (customersWithSameName.isEmpty()) {
+	        	            System.out.println("No customers with the name " + customerName + " found.");
+	        	        } else {
+	        	            System.out.println("Customers with the name " + customerName + ":");
+	        	            for (Customer customer : customersWithSameName) {
+	        	                System.out.println("ID: " + customer.getId());
+	        	                System.out.println("Name: " + customer.getName());
+	        	                System.out.println("City: " + customer.getCity());
+	        	                System.out.println("State: " + customer.getState());
+	        	                System.out.println();
+	        	            }
+	        	        }
+	        	    } catch (SQLException e) {
+	        	        System.err.println("Error recovering clients: " + e.getMessage());
+	        	    }
+	        	    break;
+
+	        	
+	        	case 4: //FUNCIONANDO
+	        	    System.out.print("Enter the ID of the customer you want to delete: ");
 	        	    int customerIdDelete = scanner.nextInt();
 
 	        	    try {
-	        	        customerDAO.deleteCustomer(customerIdDelete);
-	        	        System.out.println("Cliente excluído com sucesso!");
+	        	        Customer customerToDelete = customerDAO.getCustomerById(customerIdDelete);
+
+	        	        if (customerToDelete != null) {
+	        	            customerDAO.deleteCustomer(customerIdDelete);
+	        	            System.out.println("Customer deleted successfully!");
+	        	        } else {
+	        	            System.out.println("Customer with ID " + customerIdDelete + " No customers were excluded.");
+	        	        }
 	        	    } catch (SQLException e) {
-	        	        System.err.println("Erro ao excluir cliente: " + e.getMessage());
+	        	        System.err.println("Error deleting customer: " + e.getMessage());
 	        	    }
 	        	    break;
-	        	//case 4:
-	        	//	getCustomerById(customerName);
-	        	//  break;
 	            case 5:
-	                System.out.println("Voltando ao Menu Principal.");
+	                System.out.println("Returning to the Main Menu.");
 	                break;
 	            default:
-	                System.out.println("Opção inválida. Tente novamente.");
+	                System.out.println("Invalid option. Try again.");
 	                break;
 	        }
 	    } while (customerChoice != 5);
@@ -351,13 +387,13 @@ private void insertData()
 
 	public void displayCustomerMenu() {
 	    System.out.println("Menu Customer:");
-	    System.out.println("1. addCustomer");
-	    System.out.println("2. getCustomerById");
-	    System.out.println("3. getCustomerByName");
-	    System.out.println("4. deleteCustomer");
-	    System.out.println("5. Voltar ao Menu Principal");
-	    System.out.print("Escolha uma opção: ");
-	}
+	    System.out.println("1. Add Customer");
+	    System.out.println("2. Query Customer informations by ID");
+	    System.out.println("3. Query customer information by Name");
+	    System.out.println("4. Delete Customer");
+	    System.out.println("5. Return to Main Menu");
+	    System.out.print("Choose an option: ");
+	} 
 
 	public void handleOrderMenu() {
 	    int orderChoice = 0;
@@ -377,10 +413,10 @@ private void insertData()
 	                // Função para atualizar order
 	                break;
 	            case 4:
-	                System.out.println("Voltando ao Menu Principal.");
+	                System.out.println("Returning to the Main Menu.");
 	                break;
 	            default:
-	                System.out.println("Opção inválida. Tente novamente.");
+	                System.out.println("Invalid option. Try again.");
 	                break;
 	        }
 	    } while (orderChoice != 4);
@@ -391,8 +427,8 @@ private void insertData()
 	    System.out.println("1. Inserir um Order");
 	    System.out.println("2. Consultar Orders");
 	    System.out.println("3. Remover um Order");
-	    System.out.println("4. Voltar ao Menu Principal");
-	    System.out.print("Escolha uma opção: ");
+	    System.out.println("4. Return to Main Menu");
+	    System.out.print("Choose an option:: ");
 	}
 	
 	public void handleReportsMenu() {
@@ -406,13 +442,25 @@ private void insertData()
 	            //case 1:
 	            //    displayCustomersOrderedById();
 	            //    break;
-	            case 2:
-		            try {
-		                customerDAO.getAllCustomersOrderedByName();
-		            } catch (SQLException e) {
-		                System.err.println("Erro ao recuperar clientes: " + e.getMessage());
-		            }
-		            break;
+	        case 2: // FUNCIONANDO
+	            try {
+	                List<Customer> customers = customerDAO.getAllCustomersOrderedByName();
+	                if (customers.isEmpty()) {
+	                    System.out.println("No customers found.");
+	                } else {
+	                    System.out.println("Customers sorted by name:");
+	                    for (Customer customer : customers) {
+	                        System.out.println("Name: " + customer.getName());
+	                        System.out.println("ID: " + customer.getId());
+	                        System.out.println("City: " + customer.getCity());
+	                        System.out.println("State: " + customer.getState());
+	                        System.out.println();
+	                    }
+	                }
+	            } catch (SQLException e) {
+	                System.err.println("Error retrieving clients: " + e.getMessage());
+	            }
+	            break;
 	            //case 3:
 	            //    displayOrdersOrderedByNumber();
 	            //    break;
@@ -420,23 +468,23 @@ private void insertData()
 	            //    displayOrdersByCustomerOrderedByName();
 	            //    break;
 	            case 5:
-	                System.out.println("Voltando ao Menu Principal.");
+	                System.out.println("Returning to the Main Menu.");
 	                break;
 	            default:
-	                System.out.println("Opção inválida. Tente novamente.");
+	                System.out.println("Invalid option. Try again.");
 	                break;
 	        }
 	    } while (reportChoice != 5);
 	}
 
 	public void displayReportsMenu() {
-	    System.out.println("Menu Relatórios:");
-	    System.out.println("1. Clientes ordenados por identificador");
-	    System.out.println("2. Clientes ordenados por nome");
-	    System.out.println("3. Pedidos ordenados por número");
-	    System.out.println("4. Pedidos dos clientes ordenados por nome");
-	    System.out.println("5. Voltar ao Menu Principal");
-	    System.out.print("Escolha uma opção: ");
+	    System.out.println("Reports Menu:");
+	    System.out.println("1. Customers sorted by ID");
+	    System.out.println("2. Customers sorted by name");
+	    System.out.println("3. Orders sorted by number");
+	    System.out.println("4. Customer orders sorted by name");
+	    System.out.println("5. Return to Main Menu");
+	    System.out.print("Choose an option:: ");
 	}
 	
 	public void handleInformationMenu() {
@@ -454,10 +502,10 @@ private void insertData()
 	                displayAbout();
 	                break;
 	            case 3:
-	                System.out.println("Voltando ao Menu Principal.");
+	                System.out.println("Returning to the Main Menu.");
 	                break;
 	            default:
-	                System.out.println("Opção inválida. Tente novamente.");
+	                System.out.println("Invalid option. Try again.");
 	                break;
 	        }
 	    } while (infoChoice != 3);
@@ -465,10 +513,10 @@ private void insertData()
 
 	public void displayInformationMenu() {
 	    System.out.println("Menu Informações:");
-	    System.out.println("1. Ajuda");
-	    System.out.println("2. Sobre");
-	    System.out.println("3. Voltar ao Menu Principal");
-	    System.out.print("Escolha uma opção: ");
+	    System.out.println("1. Help");
+	    System.out.println("2. About");
+	    System.out.println("3. Return to Main Menu");
+	    System.out.print("Choose an option:: ");
 	}
 
 	public void displayHelp() {

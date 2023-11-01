@@ -123,4 +123,28 @@ public class Customer_DB_DAO extends AbstractCustomerDAO
          preparedStatement.executeUpdate();
          }
       }
+
+@Override
+public List<Customer> getCustomerByName(String customerName) throws SQLException {
+    String query = "SELECT * FROM Customer WHERE name = ?";
+    List<Customer> customers = new ArrayList<>();
+
+    try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+        preparedStatement.setString(1, customerName);
+        ResultSet resultSet = preparedStatement.executeQuery();
+
+        while (resultSet.next()) {
+            Customer customer = new Customer();
+            customer.setId(resultSet.getInt("id"));
+            customer.setName(resultSet.getString("name"));
+            customer.setCity(resultSet.getString("city"));
+            customer.setState(resultSet.getString("state"));
+            customers.add(customer);
+        }
+    }
+
+    return customers;
+}
+
+
    }
