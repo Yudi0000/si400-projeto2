@@ -70,20 +70,18 @@ public class Order_DB_DAO extends AbstractOrderDAO
       }
 
    @Override
-   public void addOrder(Orders order) throws SQLException
-      {
-      String query = "INSERT INTO Orders (number, customerId, description, price) VALUES (?, ?, ?, ?)";
+   public void addOrder(Orders order) throws SQLException {
+       String query = "INSERT INTO Orders (number, customerId, description, price) VALUES (?, ?, ?, ?)";
 
-      try (PreparedStatement preparedStatement = connection.prepareStatement(query))
-         {
-         preparedStatement.setInt(1, order.getNumber());
-         preparedStatement.setInt(2, order.getCustomerId());
-         preparedStatement.setString(3, order.getDescription());
-         preparedStatement.setBigDecimal(4, order.getPrice());
+       try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+           preparedStatement.setInt(1, order.getNumber());
+           preparedStatement.setInt(2, order.getCustomerId());
+           preparedStatement.setString(3, order.getDescription());
+           preparedStatement.setBigDecimal(4, order.getPrice());
 
-         preparedStatement.executeUpdate();
-         }
-      }
+           preparedStatement.executeUpdate();
+       }
+   }
 
    @Override
    public void updateOrder(Orders order) throws SQLException
