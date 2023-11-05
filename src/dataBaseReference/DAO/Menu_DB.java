@@ -1,6 +1,7 @@
 package dataBaseReference.DAO;
 
 import java.sql.SQLException;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 import java.math.BigDecimal;
@@ -22,11 +23,11 @@ public class Menu_DB {
 
 		public void displayMainMenu() {
 		    System.out.println("Menu Principal:");
-		    System.out.println("1. Gerenciar Customers");
-		    System.out.println("2. Gerenciar Orders");
-		    System.out.println("3. Gerenciar Relatórios");
-		    System.out.println("4. Informações");
-		    System.out.println("5. Sair");
+		    System.out.println("1. Menu Customers");
+		    System.out.println("2. Menu Orders");
+		    System.out.println("3. Menu Relatórios");
+		    System.out.println("4. Informations");
+		    System.out.println("5. Exit");
 		    System.out.print("Choose an option: ");
 		}
 	   
@@ -108,12 +109,9 @@ public class Menu_DB {
 		        	        System.err.println("Error recovering clients: " + e.getMessage());
 		        	    }
 		        	    break;
-
-		        	
 		        	case 4: //FUNCIONANDO
 		        	    System.out.print("Enter the ID of the customer you want to delete: ");
 		        	    int customerIdDelete = scanner.nextInt();
-
 		        	    try {
 		        	        Customer customerToDelete = customerDAO.getCustomerById(customerIdDelete);
 
@@ -156,44 +154,71 @@ public class Menu_DB {
 
 		        switch (orderChoice) {
 		        case 1:
-	                System.out.print("Enter the order number: ");
-	                int orderNumber = scanner.nextInt();
-	                scanner.nextLine();
+		            System.out.print("Enter the order number: ");
+		            int orderNumber = scanner.nextInt();
+		            scanner.nextLine();
 
-	                Orders newOrder = new Orders();
-	                newOrder.setNumber(orderNumber);
+		            Orders newOrder = new Orders();
+		            newOrder.setNumber(orderNumber);
 
-	                System.out.print("Enter the customer ID for the order: ");
-	                int customerId = scanner.nextInt();
-	                scanner.nextLine();
-	                newOrder.setCustomerId(customerId);
+		            System.out.print("Enter the customer ID for the order: ");
+		            int customerId = scanner.nextInt();
+		            scanner.nextLine();
+		            newOrder.setCustomerId(customerId);
 
-	                System.out.print("Enter the description for the order: ");
-	                String description = scanner.nextLine();
-	                newOrder.setDescription(description);
+		            System.out.print("Enter the description for the order: ");
+		            String description = scanner.nextLine();
+		            newOrder.setDescription(description);
 
-	                System.out.print("Enter the price for the order: ");
-	                BigDecimal price = scanner.nextBigDecimal();
-	                scanner.nextLine();
-	                newOrder.setPrice(price);
+		            boolean validPrice = false;
 
-	                try {
-	                    orderDAO.addOrder(newOrder);
-	                    System.out.println("Order added successfully!");
-	                } catch (SQLException e) {
-	                    System.err.println("Error adding order: " + e.getMessage());
-	                }
-	                break;
-		            case 2:
-		                // Função para listar orders
+		            while (!validPrice) {
+		                System.out.print("Enter the price for the order: ");
+
+		                try {
+		                    String priceString = scanner.nextLine();
+		                    BigDecimal price = new BigDecimal(priceString.replace(',', '.')); // Substitua vírgulas por pontos
+		                    newOrder.setPrice(price);
+		                    validPrice = true;
+		                } catch (NumberFormatException e) {
+		                    System.err.println("Invalid input. Please enter a valid decimal number.");
+		                }
+		                
+		                try {
+		                    orderDAO.addOrder(newOrder);
+		                    System.out.println("Order added successfully!");
+		                } catch (SQLException e) {
+		                    System.err.println("Error adding order: " + e.getMessage());
+		                }
+		            }       
+		            	break;
+		       	case 2:
+		            System.out.print("Enter the order number you want to retrieve: ");
+		            int orderNumberToRetrieve = scanner.nextInt();
+		            scanner.nextLine();
+
+		            try {
+		                Orders order = orderDAO.getOrderByNumber(orderNumberToRetrieve);
+		                if (order != null) {
+		                    System.out.println("Order Information:");
+		                    System.out.println("Order Number: " + order.getNumber());
+		                    System.out.println("Customer ID: " + order.getCustomerId());
+		                    System.out.println("Description: " + order.getDescription());
+		                    System.out.println("Price: " + order.getPrice());
+		                } else {
+		                    System.out.println("Order not found.");
+		                }
+		            } catch (SQLException e) {
+		                System.err.println("Error retrieving order: " + e.getMessage());
+		            }
+		            	break;
+		       	case 3:
+		                // Função para apagar
 		                break;
-		            case 3:
-		                // Função para atualizar order
-		                break;
-		            case 4:
+		        case 4:
 		                System.out.println("Returning to the Main Menu.");
 		                break;
-		            default:
+		        default:
 		                System.out.println("Invalid option. Try again.");
 		                break;
 		        }
@@ -202,9 +227,9 @@ public class Menu_DB {
 
 		public void displayOrderMenu() {
 		    System.out.println("Menu Order:");
-		    System.out.println("1. Inserir um Order");
-		    System.out.println("2. Consultar Orders");
-		    System.out.println("3. Remover um Order");
+		    System.out.println("1. Create an Order");
+		    System.out.println("2. Read an Orders");
+		    System.out.println("3. Remove an Order");
 		    System.out.println("4. Return to Main Menu");
 		    System.out.print("Choose an option: ");
 		}
