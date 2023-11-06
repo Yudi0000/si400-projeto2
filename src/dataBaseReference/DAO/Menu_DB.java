@@ -147,7 +147,7 @@ public class Menu_DB {
 		        displayOrderMenu();
 		        orderChoice = scanner.nextInt();
 		        scanner.nextLine();
-
+ 
 		        switch (orderChoice) {
 		            case 1:
 		                // Função para inserir um novo order
@@ -159,8 +159,11 @@ public class Menu_DB {
 		                // Função para atualizar order
 		                break;
 		            case 4:
-		                System.out.println("Returning to the Main Menu.");
+		                // Função para deletar order
 		                break;
+		            case 5: 
+		            	System.out.println("Returning to the Main Menu.");
+		            	break;
 		            default:
 		                System.out.println("Invalid option. Try again.");
 		                break;
