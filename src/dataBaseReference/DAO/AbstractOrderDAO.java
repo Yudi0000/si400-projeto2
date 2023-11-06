@@ -22,5 +22,7 @@ public abstract class AbstractOrderDAO
    abstract public List<Orders> getAllOrdersOrderedByNumber() throws SQLException;
 
    abstract public void deleteOrderByNumber(int orderNumber) throws SQLException;
+   
+   abstract public  List<Orders> generateOrdersReportByCustomerName() throws SQLException;
 
    }

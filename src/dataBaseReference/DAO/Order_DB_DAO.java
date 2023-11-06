@@ -1,5 +1,6 @@
 package dataBaseReference.DAO;
 
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -151,6 +152,33 @@ public class Order_DB_DAO extends AbstractOrderDAO
            preparedStatement.executeUpdate();
        }
    }
+
+   public List<Orders> generateOrdersReportByCustomerName() throws SQLException {
+	    List<Orders> orders = new ArrayList<>();
+	    String query = "SELECT orders.*, customer.name AS customer_name " +
+	                   "FROM orders " +
+	                   "JOIN customer ON orders.customerid = customer.id " +
+	                   "ORDER BY customer_name, orders.number"; 
+
+	    try (PreparedStatement preparedStatement = connection.prepareStatement(query);
+	         ResultSet resultSet = preparedStatement.executeQuery()) {
+
+	        while (resultSet.next()) {
+	            int number = resultSet.getInt("number");
+	            int customerId = resultSet.getInt("customerid");
+	            String description = resultSet.getString("description");
+	            BigDecimal price = resultSet.getBigDecimal("price");
+	            String customerName = resultSet.getString("customer_name");
+
+	            Orders order = new Orders(number, customerId, description, price, customerName);
+	            orders.add(order);
+	        }
+	    }
+
+	    return orders;
+	}
+
+
 
 
    }

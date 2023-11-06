@@ -49,7 +49,7 @@ public class Controller
          }
       }
 
-   public void start()
+   public void start() throws SQLException
       {
       openConnection();
       int choice = 0;

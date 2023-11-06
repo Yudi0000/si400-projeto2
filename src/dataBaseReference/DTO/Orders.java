@@ -8,24 +8,35 @@ public class Orders
    private int        customerId;
    private String     description;
    private BigDecimal price;
+   private String customerName;
+
    public Orders()
       {
       super();
       }
 
-   public Orders(int number, int customerId, String description, BigDecimal price)
-      {
-      super();
-      this.number      = number;
-      this.customerId  = customerId;
-      this.description = description;
-      this.price       = price;
-      }
+   public Orders(int number, int customerId, String description, BigDecimal price, String customerName) {
+	    super();
+	    this.number = number;
+	    this.customerId = customerId;
+	    this.description = description;
+	    this.price = price;
+	    this.customerName = customerName;
+	}
+
 
    public final int getNumber()
       {
       return number;
       }
+   
+   public String getCustomerName() {
+       return customerName;
+   }
+   
+   public void setCustomerName(String customerName) {
+       this.customerName = customerName;
+   }
    
    public final int getCustomerId()
       {

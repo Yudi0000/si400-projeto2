@@ -300,7 +300,7 @@ public class Menu_DB {
 		    System.out.print("Choose an option: ");
 		}
 		
-		public void handleReportsMenu() {
+		public void handleReportsMenu() throws SQLException {
 		    int reportChoice = 0;
 		    do {
 		        displayReportsMenu();
@@ -367,8 +367,43 @@ public class Menu_DB {
 		            }
 		            break;
 		        case 4:
-		       //GetAllOrdersByCustomersNames
+		            List<Orders> customerOrdersReport = orderDAO.generateOrdersReportByCustomerName();
+
+		            if (customerOrdersReport.isEmpty()) {
+		                System.out.println("Nenhum pedido encontrado.");
+		            } else {
+		                String currentCustomer = null;
+		                BigDecimal totalPrice = BigDecimal.ZERO;
+
+		                for (Orders order : customerOrdersReport) {
+		                    if (order.getCustomerName() != null) {
+		                        if (!order.getCustomerName().equals(currentCustomer)) {
+		                            if (currentCustomer != null) {
+		                                System.out.println("Total Price: " + totalPrice);
+		                                System.out.println("-----------------------------");
+		                            }
+
+		                            currentCustomer = order.getCustomerName();
+		                            totalPrice = BigDecimal.ZERO;
+		                            System.out.println("-----------------------------");
+		                            System.out.println("Customer: " + currentCustomer);
+		                        }
+
+		                        System.out.println("Número do Pedido: " + order.getNumber());
+		                        System.out.println("Descrição: " + order.getDescription());
+		                        System.out.println("Preço: " + order.getPrice());
+	                            System.out.println("-----------------------------");
+
+		                        totalPrice = totalPrice.add(order.getPrice());
+		                    }
+		                }
+
+		                System.out.println("Total Price: " + totalPrice);
+		                System.out.println("-----------------------------");
+		            }
+
 		            break;
+
 
 		            case 5:
 		                System.out.println("Returning to the Main Menu.");
