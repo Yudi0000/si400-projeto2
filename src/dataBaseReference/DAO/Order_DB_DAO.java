@@ -121,4 +121,36 @@ public class Order_DB_DAO extends AbstractOrderDAO
          preparedStatement.executeUpdate();
          }
       }
+   
+   @Override
+   public List<Orders> getAllOrdersOrderedByNumber() throws SQLException {
+       List<Orders> orders = new ArrayList<>();
+       String query = "SELECT * FROM Orders ORDER BY number";
+
+       try (PreparedStatement preparedStatement = connection.prepareStatement(query);
+            ResultSet resultSet = preparedStatement.executeQuery()) {
+
+           while (resultSet.next()) {
+               Orders order = new Orders();
+               order.setNumber(resultSet.getInt("number"));
+               order.setCustomerId(resultSet.getInt("customerId"));
+               order.setDescription(resultSet.getString("description"));
+               order.setPrice(resultSet.getBigDecimal("price"));
+               orders.add(order);
+           }
+       }
+
+       return orders;
+   }
+   
+   @Override
+   public void deleteOrderByNumber(int orderNumber) throws SQLException {
+       String query = "DELETE FROM Orders WHERE number = ?";
+       try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+           preparedStatement.setInt(1, orderNumber);
+           preparedStatement.executeUpdate();
+       }
+   }
+
+
    }

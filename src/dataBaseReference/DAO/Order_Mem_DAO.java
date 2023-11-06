@@ -2,6 +2,7 @@ package dataBaseReference.DAO;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
@@ -12,7 +13,7 @@ import dataBaseReference.RDBMS.MemoryDBConnection;
 public class Order_Mem_DAO extends AbstractOrderDAO
    {
    private MemoryDBConnection databaseRef;
-
+   
    public Order_Mem_DAO(MemoryDBConnection databaseRef)
       {
       super();
@@ -94,4 +95,35 @@ public class Order_Mem_DAO extends AbstractOrderDAO
       {
       databaseRef.getOrderList().clear();
       }
+   
+   @Override
+   public List<Orders> getAllOrdersOrderedByNumber() throws SQLException {
+       List<Orders> orders = new ArrayList<>();
+
+       List<Orders> orderList = databaseRef.getOrderList();
+
+       orderList.sort(Comparator.comparingInt(Orders::getNumber));
+
+       orders.addAll(orderList);
+
+       return orders;
+   }
+   
+   public void deleteOrderByNumber(int orderNumber) throws SQLException {
+	    List<Orders> orders = databaseRef.getOrderList();
+	    Orders orderToRemove = null;
+
+	    for (Orders order : orders) {
+	        if (order.getNumber() == orderNumber) {
+	            orderToRemove = order;
+	            break;
+	        }
+	    }
+
+	    if (orderToRemove != null) {
+	        orders.remove(orderToRemove);
+	    }
+	}
+
+
    }

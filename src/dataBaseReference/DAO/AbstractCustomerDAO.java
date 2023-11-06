@@ -20,4 +20,7 @@ public abstract class AbstractCustomerDAO
    abstract public void deleteCustomer(int customerId) throws SQLException;
 
    abstract public void deleteAllCustomers() throws SQLException;
+   
+   abstract public List<Customer> getAllCustomersOrderedById() throws SQLException;
+
    }

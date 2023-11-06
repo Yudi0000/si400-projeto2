@@ -146,5 +146,26 @@ public List<Customer> getCustomerByName(String customerName) throws SQLException
     return customers;
 }
 
+public List<Customer> getAllCustomersOrderedById() throws SQLException {
+    List<Customer> customers = new ArrayList<>();
+    String query = "SELECT * FROM Customer ORDER BY id";
+
+    try (PreparedStatement preparedStatement = connection.prepareStatement(query);
+         ResultSet resultSet = preparedStatement.executeQuery()) {
+
+        while (resultSet.next()) {
+            Customer customer = new Customer();
+            customer.setId(resultSet.getInt("id"));
+            customer.setName(resultSet.getString("name"));
+            customer.setCity(resultSet.getString("city"));
+            customer.setState(resultSet.getString("state"));
+            customers.add(customer);
+        }
+    }
+
+    return customers;
+}
+
+
 
    }

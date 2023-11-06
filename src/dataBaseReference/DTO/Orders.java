@@ -8,7 +8,6 @@ public class Orders
    private int        customerId;
    private String     description;
    private BigDecimal price;
-
    public Orders()
       {
       super();
@@ -27,7 +26,7 @@ public class Orders
       {
       return number;
       }
-
+   
    public final int getCustomerId()
       {
       return customerId;

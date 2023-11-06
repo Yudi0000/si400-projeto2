@@ -1,18 +1,19 @@
 package dataBaseReference.DAO;
 
 import java.sql.SQLException;
-import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 import java.math.BigDecimal;
 
 import dataBaseReference.DTO.Customer;
 import dataBaseReference.DTO.Orders;
+import dataBaseReference.System.Controller;
 
 public class Menu_DB {
 	private Scanner scanner;
     private AbstractCustomerDAO customerDAO = null;
     private AbstractOrderDAO orderDAO = null;
+    private Controller controller;
 
     public Menu_DB(Scanner scanner, AbstractCustomerDAO customerDAO, AbstractOrderDAO orderDAO) {
         this.scanner = scanner;
@@ -39,7 +40,8 @@ public class Menu_DB {
 		        scanner.nextLine();
 
 		        switch (customerChoice) {
-		        	case 1: //FUNCIONANDO
+		        	case 1:
+		        		
 		        		  Customer newCustomer = new Customer();
 			        	    System.out.print("Enter the customer ID: ");
 			        	    int custumerId = scanner.nextInt();
@@ -65,7 +67,7 @@ public class Menu_DB {
 			        	        System.err.println("Error adding customer: " + e.getMessage());
 			        	    }
 			        	    break;
-		        	case 2: //FUNCIONANDO
+		        	case 2:
 		        	    System.out.print("Enter the customer ID: ");
 		        	    int customerId = scanner.nextInt();
 		        	    scanner.nextLine();
@@ -86,7 +88,7 @@ public class Menu_DB {
 		        	        System.err.println("Error recovering client: " + e.getMessage());
 		        	    }
 		        	    break;
-		        	case 3: //Funcionando
+		        	case 3:
 		        	    System.out.print("Enter the customer Name: ");
 		        	    String customerName = scanner.nextLine();
 
@@ -109,7 +111,7 @@ public class Menu_DB {
 		        	        System.err.println("Error recovering clients: " + e.getMessage());
 		        	    }
 		        	    break;
-		        	case 4: //FUNCIONANDO
+		        	case 4:
 		        	    System.out.print("Enter the ID of the customer you want to delete: ");
 		        	    int customerIdDelete = scanner.nextInt();
 		        	    try {
@@ -177,7 +179,7 @@ public class Menu_DB {
 
 		                try {
 		                    String priceString = scanner.nextLine();
-		                    BigDecimal price = new BigDecimal(priceString.replace(',', '.')); // Substitua vírgulas por pontos
+		                    BigDecimal price = new BigDecimal(priceString.replace(',', '.'));
 		                    newOrder.setPrice(price);
 		                    validPrice = true;
 		                } catch (NumberFormatException e) {
@@ -213,8 +215,17 @@ public class Menu_DB {
 		            }
 		            	break;
 		       	case 3:
-		                // Função para apagar
-		                break;
+		       	    System.out.print("Enter the order number to delete: ");
+		       	    int orderNumberToDelete = scanner.nextInt();
+		       	    scanner.nextLine();
+
+		       	    try {
+		       	        orderDAO.deleteOrderByNumber(orderNumberToDelete);
+		       	        System.out.println("Order deleted successfully!");
+		       	    } catch (SQLException e) {
+		       	        System.err.println("Error deleting order: " + e.getMessage());
+		       	    }
+		       	    	break;
 		        case 4:
 		                System.out.println("Returning to the Main Menu.");
 		                break;
@@ -242,10 +253,23 @@ public class Menu_DB {
 		        scanner.nextLine();
 
 		        switch (reportChoice) {
-		            //case 1:
-		            //    displayCustomersOrderedById();
-		            //    break;
-		        case 2: // FUNCIONANDO
+		            case 1:
+		        try {
+		            List<Customer> customers = customerDAO.getAllCustomersOrderedById();
+
+		            System.out.println("Customers Ordered by ID:");
+		            for (Customer customer : customers) {
+		                System.out.println("ID: " + customer.getId());
+		                System.out.println("Name: " + customer.getName());
+		                System.out.println("City: " + customer.getCity());
+		                System.out.println("State: " + customer.getState());
+		                System.out.println();
+		            }
+		        } catch (SQLException e) {
+		            System.err.println("Error retrieving customers: " + e.getMessage());
+		        }		            
+		        	break;
+		        case 2:
 		            try {
 		                List<Customer> customers = customerDAO.getAllCustomersOrderedByName();
 		                if (customers.isEmpty()) {
@@ -264,12 +288,24 @@ public class Menu_DB {
 		                System.err.println("Error retrieving clients: " + e.getMessage());
 		            }
 		            break;
-		            //case 3:
-		            //    displayOrdersOrderedByNumber();
-		            //    break;
-		            //case 4:
-		            //    displayOrdersByCustomerOrderedByName();
-		            //    break;
+		        case 3:
+		            try {
+		                List<Orders> orders = orderDAO.getAllOrdersOrderedByNumber();
+		                for (Orders order : orders) {
+		                    System.out.println("Order Number: " + order.getNumber());
+		                    System.out.println("Customer ID: " + order.getCustomerId());
+		                    System.out.println("Description: " + order.getDescription());
+		                    System.out.println("Price: " + order.getPrice());
+		                    System.out.println();
+		                }
+		            } catch (SQLException e) {
+		                System.err.println("Error retrieving orders: " + e.getMessage());
+		            }
+		            break;
+		        case 4:
+		       //GetAllOrdersByCustomersNames
+		            break;
+
 		            case 5:
 		                System.out.println("Returning to the Main Menu.");
 		                break;
@@ -305,29 +341,77 @@ public class Menu_DB {
 		                displayAbout();
 		                break;
 		            case 3:
+		                handleSpecialOperationsMenu();
+		                break;
+		            case 4:
 		                System.out.println("Returning to the Main Menu.");
 		                break;
 		            default:
 		                System.out.println("Invalid option. Try again.");
 		                break;
 		        }
-		    } while (infoChoice != 3);
+		    } while (infoChoice != 4);
 		}
 
 		public void displayInformationMenu() {
 		    System.out.println("Menu Informações:");
 		    System.out.println("1. Help");
 		    System.out.println("2. About");
-		    System.out.println("3. Return to Main Menu");
+		    System.out.println("3. Special operations");
+		    System.out.println("4. Return to Main Menu");
 		    System.out.print("Choose an option: ");
 		}
 
+		public void handleSpecialOperationsMenu() {
+		    int specialChoice = 0;
+		    do {
+		        displaySpecialOperationsMenu();
+		        specialChoice = scanner.nextInt();
+		        scanner.nextLine();
+		        
+		        switch (specialChoice) {
+		            case 1:
+		                controller.insertData();
+		                break;
+		            case 2:
+		            	controller.deleteAllData();
+		                break;
+		            case 3:
+		            	controller.requestData();
+		                break;
+		            case 4:
+		                System.out.println("Returning to Information Menu.");
+		                break;
+		            default:
+		                System.out.println("Invalid option. Try again.");
+		                break;
+		        }
+		    } while (specialChoice != 4);
+		}
+
+		public void displaySpecialOperationsMenu() {
+		    System.out.println("Operações Especiais:");
+		    System.out.println("1. Insert Random Data");
+		    System.out.println("2. Delete All Data");
+		    System.out.println("3. Request Data");
+		    System.out.println("4. Return to Information Menu");
+		    System.out.print("Choose a special operation: ");
+		}
+
 		public void displayHelp() {
-		    System.out.println("Texto explicativo do programa...");
+		    System.out.println("Customer and Order Database Management System is software designed "
+		    		+ "			to help businesses maintain an organized record of their customers and orders. "
+		    		+ "			This system offers essential functionality for storing and managing "
+		    		+ "			important information about customers and the products or services they request.");
 		}
 
 		public void displayAbout() {
-		    System.out.println("Versão do programa...");
-		    System.out.println("Créditos de autoria...");
+		    System.out.println("This is Version 1.0 ");
+		    System.out.println("Credits:");
+	        System.out.println("Gabrielly Tegon - 260797");
+	        System.out.println("Henrique Bexiga Eulálio - 255002");
+	        System.out.println("Luiz Henrique Oliveira André - 247546");
+	        System.out.println("Matheus Yudi Colli Issida - 260848");
+	        System.out.println("Vinícius da Silva Germano - 254377");
 		}
 }

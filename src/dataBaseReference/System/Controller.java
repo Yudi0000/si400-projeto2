@@ -1,19 +1,15 @@
 package dataBaseReference.System;
 import java.util.Scanner;
 import java.math.BigDecimal;
-import java.security.InvalidParameterException;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Random;
 
 import dataBaseReference.DAO.AbstractCustomerDAO;
-import dataBaseReference.DAO.AbstractMenuDAO;
 import dataBaseReference.DAO.AbstractOrderDAO;
 import dataBaseReference.DAO.Customer_DB_DAO;
 import dataBaseReference.DAO.Menu_DB;
-import dataBaseReference.DAO.Customer_Mem_DAO;
 import dataBaseReference.DAO.Order_DB_DAO;
-import dataBaseReference.DAO.Order_Mem_DAO;
 import dataBaseReference.DTO.Customer;
 import dataBaseReference.DTO.Orders;
 import dataBaseReference.RDBMS.MariaDBConnection;
@@ -25,7 +21,6 @@ public class Controller
    private AbstractOrderDAO    ordersDAO          = null;
    private MariaDBConnection   myDBConnection     = null;
    private MemoryDBConnection  memoryDBConnection = null;
-   private AbstractMenuDAO menu = null;
    private Scanner scanner;
    
    public Controller(DataBaseType selectedDataBase)
@@ -89,7 +84,7 @@ public class Controller
       }
 
 
-private void insertData()
+public void insertData()
       {
       System.out.println("Create 4 random customers");
       try
@@ -124,7 +119,7 @@ private void insertData()
       System.out.println("Random customers and orders created successfully!");
       }
 
-   private void requestData()
+	public void requestData()
       {
 
       System.out.println("Requesting all customers");
@@ -207,7 +202,7 @@ private void insertData()
          }
       }
 
-   private void updateData()
+   public void updateData()
       {
       // Single Customer
       try
@@ -237,7 +232,7 @@ private void insertData()
 
       }
 
-   private void deleteData()
+   public void deleteData()
       {
       try
          {
@@ -264,7 +259,7 @@ private void insertData()
          }
       }
 
-   private void deleteAllData()
+   public void deleteAllData()
       {
       System.out.println("Deleting all data");
 

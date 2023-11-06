@@ -2,6 +2,7 @@ package dataBaseReference.DAO;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
@@ -102,4 +103,17 @@ public class Customer_Mem_DAO extends AbstractCustomerDAO
       {
       databaseRef.getCustomerList().clear();
       }
+   
+   public List<Customer> getAllCustomersOrderedById() throws SQLException {
+	    List<Customer> customers = new ArrayList<>();
+	    
+	    List<Customer> customerList = databaseRef.getCustomerList();
+	    
+	    customerList.sort(Comparator.comparingInt(Customer::getId));
+
+	    customers.addAll(customerList);
+	    
+	    return customers;
+	}
+
    }
