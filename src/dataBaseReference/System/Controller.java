@@ -53,7 +53,8 @@ public class Controller
       {
       openConnection();
       int choice = 0;
-      Menu_DB menu = new Menu_DB(scanner, customerDAO,ordersDAO);
+      
+      Menu_DB menu = new Menu_DB(scanner, customerDAO, ordersDAO, this);
       do {	
           menu.displayMainMenu();
           choice = scanner.nextInt();
@@ -115,8 +116,11 @@ public void insertData()
          // TODO Auto-generated catch block
          e.printStackTrace();
          }
+      System.out.println("-----------------------------");
 
       System.out.println("Random customers and orders created successfully!");
+      System.out.println("-----------------------------");
+
       }
 
 	public void requestData()
@@ -144,13 +148,18 @@ public void insertData()
 
          if (customer != null)
             {
+            System.out.println("-----------------------------");
             System.out.println("Customer Name: " + customer.getName());
             System.out.println("City: " + customer.getCity());
             System.out.println("State: " + customer.getState());
+            System.out.println("-----------------------------");
+
             }
          else
             {
+            System.out.println("-----------------------------");
             System.out.println("Customer not found.");
+            System.out.println("-----------------------------");
             }
          }
       catch (SQLException e)
@@ -167,10 +176,12 @@ public void insertData()
 
          for (Orders order : customerOrders)
             {
+            System.out.println("-----------------------------");
             System.out.println("Order Number: " + order.getNumber());
             System.out.println("Description: " + order.getDescription());
             System.out.println("Price: " + order.getPrice());
             System.out.println();
+            System.out.println("-----------------------------");
             }
          }
       catch (SQLException e)
@@ -186,14 +197,18 @@ public void insertData()
 
          if (order != null)
             {
+            System.out.println("-----------------------------");
             System.out.println("Order Number: " + order.getNumber());
             System.out.println("Customer ID: " + order.getCustomerId());
             System.out.println("Description: " + order.getDescription());
             System.out.println("Price: " + order.getPrice());
+            System.out.println("-----------------------------");
             }
          else
             {
+            System.out.println("-----------------------------");
             System.out.println("Order not found.");
+            System.out.println("-----------------------------");
             }
          }
       catch (SQLException e)
@@ -261,7 +276,9 @@ public void insertData()
 
    public void deleteAllData()
       {
+      System.out.println("-----------------------------");
       System.out.println("Deleting all data");
+      System.out.println("-----------------------------");
 
       try
          {

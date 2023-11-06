@@ -19,14 +19,19 @@ public class Menu_DB {
         this.scanner = scanner;
         this.customerDAO = customerDAO;
         this.orderDAO = orderDAO;
+
+    }
+    
+    public Menu_DB(Scanner scanner, AbstractCustomerDAO customerDAO, AbstractOrderDAO orderDAO, Controller controller) {
+        this(scanner, customerDAO, orderDAO);
+        this.controller = controller; 
     }
 
-
 		public void displayMainMenu() {
-		    System.out.println("Menu Principal:");
+		    System.out.println("Main Menu:");
 		    System.out.println("1. Menu Customers");
 		    System.out.println("2. Menu Orders");
-		    System.out.println("3. Menu Relatórios");
+		    System.out.println("3. Menu Reports");
 		    System.out.println("4. Informations");
 		    System.out.println("5. Exit");
 		    System.out.print("Choose an option: ");
@@ -61,10 +66,12 @@ public class Menu_DB {
 
 			        	    try {
 			        	        customerDAO.addCustomer(newCustomer);
+		        	            System.out.println("-----------------------------");
 			        	        System.out.println("Customer added successfully!");
 		        	            System.out.println("-----------------------------");
 
 			        	    } catch (SQLException e) {
+		        	            System.out.println("-----------------------------");
 			        	        System.err.println("Error adding customer: " + e.getMessage());
 		        	            System.out.println("-----------------------------");
 
@@ -87,6 +94,7 @@ public class Menu_DB {
 		        	            System.out.println("-----------------------------");
 
 		        	        } else {
+		        	            System.out.println("-----------------------------");
 		        	            System.out.println("Customer not found.");
 		        	            System.out.println("-----------------------------");
 
@@ -103,6 +111,7 @@ public class Menu_DB {
 		        	        List<Customer> customersWithSameName = customerDAO.getCustomerByName(customerName);
 
 		        	        if (customersWithSameName.isEmpty()) {
+		        	            System.out.println("-----------------------------");
 		        	            System.out.println("No customers with the name " + customerName + " found.");
 		        	            System.out.println("-----------------------------");
 
@@ -130,26 +139,31 @@ public class Menu_DB {
 
 		        	        if (customerToDelete != null) {
 		        	            customerDAO.deleteCustomer(customerIdDelete);
+		        	            System.out.println("-----------------------------");
 		        	            System.out.println("Customer deleted successfully!");
 		        	            System.out.println("-----------------------------");
 
 		        	        } else {
-		        	            System.out.println("Customer with ID " + customerIdDelete + " No customers were excluded.");
+		        	            System.out.println("-----------------------------");
+		        	            System.out.println("Customer with ID " + customerIdDelete + "not found. No customers were excluded.");
 		        	            System.out.println("-----------------------------");
 
 		        	        }
 		        	    } catch (SQLException e) {
+	        	            System.out.println("-----------------------------");
 		        	        System.err.println("Error deleting customer: " + e.getMessage());
 	        	            System.out.println("-----------------------------");
 
 		        	    }
 		        	    break;
 		            case 5:
+        	            System.out.println("-----------------------------");
 		                System.out.println("Returning to the Main Menu.");
         	            System.out.println("-----------------------------");
 
 		                break;
 		            default:
+        	            System.out.println("-----------------------------");
 		                System.out.println("Invalid option. Try again.");
         	            System.out.println("-----------------------------");
 
@@ -204,17 +218,20 @@ public class Menu_DB {
 		                    newOrder.setPrice(price);
 		                    validPrice = true;
 		                } catch (NumberFormatException e) {
-		                    System.err.println("Invalid input. Please enter a valid decimal number.");
+	        	            System.out.println("-----------------------------");
+		                	System.err.println("Invalid input. Please enter a valid decimal number.");
 	        	            System.out.println("-----------------------------");
 
 		                }
 		                
 		                try {
 		                    orderDAO.addOrder(newOrder);
+	        	            System.out.println("-----------------------------");
 		                    System.out.println("Order added successfully!");
 	        	            System.out.println("-----------------------------");
 
 		                } catch (SQLException e) {
+	        	            System.out.println("-----------------------------");
 		                    System.err.println("Error adding order: " + e.getMessage());
 	        	            System.out.println("-----------------------------");
 
@@ -237,6 +254,7 @@ public class Menu_DB {
 	        	            System.out.println("-----------------------------");
 
 		                } else {
+	        	            System.out.println("-----------------------------");
 		                    System.out.println("Order not found.");
 	        	            System.out.println("-----------------------------");
 
@@ -252,10 +270,12 @@ public class Menu_DB {
 
 		       	    try {
 		       	        orderDAO.deleteOrderByNumber(orderNumberToDelete);
+        	            System.out.println("-----------------------------");
 		       	        System.out.println("Order deleted successfully!");
         	            System.out.println("-----------------------------");
 
 		       	    } catch (SQLException e) {
+        	            System.out.println("-----------------------------");
 		       	        System.err.println("Error deleting order: " + e.getMessage());
         	            System.out.println("-----------------------------");
 
@@ -310,6 +330,7 @@ public class Menu_DB {
 		            try {
 		                List<Customer> customers = customerDAO.getAllCustomersOrderedByName();
 		                if (customers.isEmpty()) {
+	        	            System.out.println("-----------------------------");
 		                    System.out.println("No customers found.");
 	        	            System.out.println("-----------------------------");
 
@@ -364,7 +385,7 @@ public class Menu_DB {
 		    System.out.println("1. Customers sorted by ID");
 		    System.out.println("2. Customers sorted by name");
 		    System.out.println("3. Orders sorted by number");
-		    System.out.println("4. Customer orders sorted by name");
+		    System.out.println("4. Customer's orders sorted by name");
 		    System.out.println("5. Return to Main Menu");
 		    System.out.print("Choose an option: ");
 		}
@@ -442,13 +463,17 @@ public class Menu_DB {
 		}
 
 		public void displayHelp() {
-		    System.out.println("Customer and Order Database Management System is software designed "
-		    		+ "			to help businesses maintain an organized record of their customers and orders. "
-		    		+ "			This system offers essential functionality for storing and managing "
-		    		+ "			important information about customers and the products or services they request.");
+            System.out.println("-----------------------------");
+		    System.out.println("Customer and Order Database Management System is software designed");
+		    System.out.println("to help businesses maintain an organized record of their customers and orders.");
+		    System.out.println("This system offers essential functionality for storing and managing ");
+		    System.out.println("important information about customers and the products or services they request.");
+            System.out.println("-----------------------------");
+
 		}
 
 		public void displayAbout() {
+            System.out.println("-----------------------------");
 		    System.out.println("This is Version 1.0 ");
 		    System.out.println("Credits:");
 	        System.out.println("Gabrielly Tegon - 260797");
@@ -456,5 +481,7 @@ public class Menu_DB {
 	        System.out.println("Luiz Henrique Oliveira André - 247546");
 	        System.out.println("Matheus Yudi Colli Issida - 260848");
 	        System.out.println("Vinícius da Silva Germano - 254377");
+            System.out.println("-----------------------------");
+
 		}
 }
