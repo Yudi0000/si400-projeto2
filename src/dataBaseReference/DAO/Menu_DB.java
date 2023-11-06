@@ -62,9 +62,12 @@ public class Menu_DB {
 			        	    try {
 			        	        customerDAO.addCustomer(newCustomer);
 			        	        System.out.println("Customer added successfully!");
-			        	        
+		        	            System.out.println("-----------------------------");
+
 			        	    } catch (SQLException e) {
 			        	        System.err.println("Error adding customer: " + e.getMessage());
+		        	            System.out.println("-----------------------------");
+
 			        	    }
 			        	    break;
 		        	case 2:
@@ -81,8 +84,12 @@ public class Menu_DB {
 		        	            System.out.println("Name: " + customer.getName());
 		        	            System.out.println("City: " + customer.getCity());
 		        	            System.out.println("State: " + customer.getState());
+		        	            System.out.println("-----------------------------");
+
 		        	        } else {
 		        	            System.out.println("Customer not found.");
+		        	            System.out.println("-----------------------------");
+
 		        	        }
 		        	    } catch (SQLException e) {
 		        	        System.err.println("Error recovering client: " + e.getMessage());
@@ -97,6 +104,8 @@ public class Menu_DB {
 
 		        	        if (customersWithSameName.isEmpty()) {
 		        	            System.out.println("No customers with the name " + customerName + " found.");
+		        	            System.out.println("-----------------------------");
+
 		        	        } else {
 		        	            System.out.println("Customers with the name " + customerName + ":");
 		        	            for (Customer customer : customersWithSameName) {
@@ -105,6 +114,8 @@ public class Menu_DB {
 		        	                System.out.println("City: " + customer.getCity());
 		        	                System.out.println("State: " + customer.getState());
 		        	                System.out.println();
+			        	            System.out.println("-----------------------------");
+
 		        	            }
 		        	        }
 		        	    } catch (SQLException e) {
@@ -120,18 +131,28 @@ public class Menu_DB {
 		        	        if (customerToDelete != null) {
 		        	            customerDAO.deleteCustomer(customerIdDelete);
 		        	            System.out.println("Customer deleted successfully!");
+		        	            System.out.println("-----------------------------");
+
 		        	        } else {
 		        	            System.out.println("Customer with ID " + customerIdDelete + " No customers were excluded.");
+		        	            System.out.println("-----------------------------");
+
 		        	        }
 		        	    } catch (SQLException e) {
 		        	        System.err.println("Error deleting customer: " + e.getMessage());
+	        	            System.out.println("-----------------------------");
+
 		        	    }
 		        	    break;
 		            case 5:
 		                System.out.println("Returning to the Main Menu.");
+        	            System.out.println("-----------------------------");
+
 		                break;
 		            default:
 		                System.out.println("Invalid option. Try again.");
+        	            System.out.println("-----------------------------");
+
 		                break;
 		        }
 		    } while (customerChoice != 5);
@@ -184,13 +205,19 @@ public class Menu_DB {
 		                    validPrice = true;
 		                } catch (NumberFormatException e) {
 		                    System.err.println("Invalid input. Please enter a valid decimal number.");
+	        	            System.out.println("-----------------------------");
+
 		                }
 		                
 		                try {
 		                    orderDAO.addOrder(newOrder);
 		                    System.out.println("Order added successfully!");
+	        	            System.out.println("-----------------------------");
+
 		                } catch (SQLException e) {
 		                    System.err.println("Error adding order: " + e.getMessage());
+	        	            System.out.println("-----------------------------");
+
 		                }
 		            }       
 		            	break;
@@ -207,8 +234,12 @@ public class Menu_DB {
 		                    System.out.println("Customer ID: " + order.getCustomerId());
 		                    System.out.println("Description: " + order.getDescription());
 		                    System.out.println("Price: " + order.getPrice());
+	        	            System.out.println("-----------------------------");
+
 		                } else {
 		                    System.out.println("Order not found.");
+	        	            System.out.println("-----------------------------");
+
 		                }
 		            } catch (SQLException e) {
 		                System.err.println("Error retrieving order: " + e.getMessage());
@@ -222,8 +253,12 @@ public class Menu_DB {
 		       	    try {
 		       	        orderDAO.deleteOrderByNumber(orderNumberToDelete);
 		       	        System.out.println("Order deleted successfully!");
+        	            System.out.println("-----------------------------");
+
 		       	    } catch (SQLException e) {
 		       	        System.err.println("Error deleting order: " + e.getMessage());
+        	            System.out.println("-----------------------------");
+
 		       	    }
 		       	    	break;
 		        case 4:
@@ -264,6 +299,8 @@ public class Menu_DB {
 		                System.out.println("City: " + customer.getCity());
 		                System.out.println("State: " + customer.getState());
 		                System.out.println();
+        	            System.out.println("-----------------------------");
+
 		            }
 		        } catch (SQLException e) {
 		            System.err.println("Error retrieving customers: " + e.getMessage());
@@ -274,6 +311,8 @@ public class Menu_DB {
 		                List<Customer> customers = customerDAO.getAllCustomersOrderedByName();
 		                if (customers.isEmpty()) {
 		                    System.out.println("No customers found.");
+	        	            System.out.println("-----------------------------");
+
 		                } else {
 		                    System.out.println("Customers sorted by name:");
 		                    for (Customer customer : customers) {
@@ -282,6 +321,8 @@ public class Menu_DB {
 		                        System.out.println("City: " + customer.getCity());
 		                        System.out.println("State: " + customer.getState());
 		                        System.out.println();
+		        	            System.out.println("-----------------------------");
+
 		                    }
 		                }
 		            } catch (SQLException e) {
@@ -297,6 +338,8 @@ public class Menu_DB {
 		                    System.out.println("Description: " + order.getDescription());
 		                    System.out.println("Price: " + order.getPrice());
 		                    System.out.println();
+	        	            System.out.println("-----------------------------");
+
 		                }
 		            } catch (SQLException e) {
 		                System.err.println("Error retrieving orders: " + e.getMessage());
@@ -390,7 +433,7 @@ public class Menu_DB {
 		}
 
 		public void displaySpecialOperationsMenu() {
-		    System.out.println("Operações Especiais:");
+		    System.out.println("Special Operation:");
 		    System.out.println("1. Insert Random Data");
 		    System.out.println("2. Delete All Data");
 		    System.out.println("3. Request Data");
