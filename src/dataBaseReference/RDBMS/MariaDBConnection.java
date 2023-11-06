@@ -6,8 +6,8 @@ import java.sql.SQLException;
 
 public final class MariaDBConnection
    {
-   private static final String JDBC_URL   = "jdbc:mariadb://localhost:3306/si400";
-   private static final String USERNAME   = "root";
+   private static final String JDBC_URL   = "jdbc:mariadb://143.106.243.64:3306/SI400";
+   private static final String USERNAME   = "si400_2023";
    private static final String PASSWORD   = "si400_2023";
    private Connection          connection = null;
 
