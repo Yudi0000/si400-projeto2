@@ -50,7 +50,11 @@ public class Menu_DB {
 		        		  Customer newCustomer = new Customer();
 			        	    System.out.print("Enter the customer ID: ");
 			        	    int custumerId = scanner.nextInt();
+<<<<<<< HEAD
 			        	    if (custumerId >= 70000 && custumerId <= 79999) {
+=======
+			        	    if (custumerId >= 7000 && custumerId <= 7999) {
+>>>>>>> 7a3cd394dea5e815a34e0df958a9eddb30be54c6
 			        	    	newCustomer.setId(custumerId);
 			        	    } else {
 			        	    	System.out.println("Invalid number, try again.");

@@ -22,13 +22,20 @@ public class Controller
    private MariaDBConnection   myDBConnection     = null;
    private MemoryDBConnection  memoryDBConnection = null;
    private Scanner scanner;
+<<<<<<< HEAD
    private String username;
    private String password;
+=======
+>>>>>>> 7a3cd394dea5e815a34e0df958a9eddb30be54c6
    
    public Controller(DataBaseType selectedDataBase)
       {
       super();
       this.scanner = new Scanner(System.in);
+<<<<<<< HEAD
+=======
+      
+>>>>>>> 7a3cd394dea5e815a34e0df958a9eddb30be54c6
       }
 
    private void openConnection()
@@ -52,7 +59,10 @@ public class Controller
 
    public void start() throws SQLException
       {
+<<<<<<< HEAD
 	  authenticateUser();
+=======
+>>>>>>> 7a3cd394dea5e815a34e0df958a9eddb30be54c6
       openConnection();
       int choice = 0;
       
@@ -292,6 +302,7 @@ public void insertData()
          System.err.println("Error retrieving order: " + e.getMessage());
          }
       }
+<<<<<<< HEAD
    
    private void authenticateUser() {
        System.out.println("Username: ");
@@ -308,5 +319,8 @@ public void insertData()
            System.out.println("Successfully accessed. Welcome!");
        	}
    }
+=======
+
+>>>>>>> 7a3cd394dea5e815a34e0df958a9eddb30be54c6
    
    }

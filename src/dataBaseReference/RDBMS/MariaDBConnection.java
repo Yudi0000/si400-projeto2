@@ -6,7 +6,11 @@ import java.sql.SQLException;
 
 public final class MariaDBConnection
    {
+<<<<<<< HEAD
    private static final String JDBC_URL   = "jdbc:mariadb://localhost:3306/SI400";
+=======
+   private static final String JDBC_URL   = "jdbc:mariadb://localhost:3307/si400";
+>>>>>>> 7a3cd394dea5e815a34e0df958a9eddb30be54c6
    private static final String USERNAME   = "root";
    private static final String PASSWORD   = "si400_2023";
    private Connection          connection = null;
